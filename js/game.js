@@ -6,6 +6,9 @@ var Timer              // Timer --
 var LevelTimer = null; // LevelTimer
 var FirstLevelTimer = null;
 
+var mistakes = 0;
+var levelTime = 0;
+
 var LevelConfig = [];
 
 // Questions
@@ -267,6 +270,27 @@ var score = 0;
 function UpdateScore() {
 	score = score + (level * 20);
 	$('.score span').text(score);
+	var addScore = $('<div class="add-score">+' + (level * 20) + '</div>');
+	$('.score').append(addScore);
+	setTimeout(function() {
+		addScore.remove();
+	}, 500);
+}
+
+function UpdateTime() {
+	var TimePlus = 10 - mistakes - levelTime;
+
+	mistakes = 0;
+	levelTime = 0;
+
+	if (TimePlus > 0) {
+		TimeNow+= TimePlus;
+		var addTime = $('<div class="add-time">+0:0' + TimePlus + '</div>');
+		$('.time').append(addTime);
+		setTimeout(function() {
+			addTime.remove();
+		}, 500);
+	}
 }
 
 function getLevelQuestion() { 
@@ -308,6 +332,7 @@ function PrettyTime() {
 
 function counterdownTimer() {
 	TimeNow--;
+	levelTime++;
 	if (TimeNow < 0) {
 		clearInterval(Timer);
 		$('.twitter').attr('href', 'http://twitter.com/share?text=I scored ' + $('.score span').text() + '&url=http://nickbrit.github.io/sciencerio/&hashtags=')
@@ -378,11 +403,13 @@ $(document).ready(function() {
 		var num = parseInt($(this).attr('data-number'));
 		if (num == AnswerNum) {
 	 		UpdateScore();
+	 		UpdateTime();
 	 		if (level < 17) level ++;
 	 		levelShow++;
 	 		$('.score .title').text('Level ' + levelShow);
 			BuildBricks();
 		} else {
+			mistakes++;
 			var error = $('<div class="error"></div>');
 			$(this).append(error);
 			error.animate({
@@ -420,6 +447,9 @@ $(document).ready(function() {
 		FirstLevelTimer = null;
 		AnswerNum = 0;
 		score = 0;
+
+		mistakes = 0;
+		levelTime = 0;
 
 		$('.score span').text(score);
 
