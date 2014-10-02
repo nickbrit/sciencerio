@@ -335,7 +335,7 @@ function counterdownTimer() {
 	levelTime++;
 	if (TimeNow < 0) {
 		clearInterval(Timer);
-		$('.twitter').attr('href', 'http://twitter.com/share?text=I scored ' + $('.score span').text() + '&url=http://nickbrit.github.io/sciencerio/&hashtags=')
+		$('.twitter').attr('href', 'http://twitter.com/share?text=ScienceRio. I scored ' + $('.score span').text() + '&url=http://nickbrit.github.io/sciencerio/&hashtags=')
 		ShowWindow('<h4>Game Over</h4>Your score: ' + $('.score span').text());
 	} else {
 		PrettyTime();
